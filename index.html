@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>GenAI 影片模型市場全面分析 — 策略顧問報告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #1A3A6B;
+    --black: #1A1A1A;
+    --red: #C9363C;
+    --amber: #D4920B;
+    --green: #2A7D4F;
+    --g1: #444444;
+    --g2: #777777;
+    --g3: #BBBBBB;
+    --g4: #EEEEEE;
+    --white: #FFFFFF;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F2F4F7;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 40px;
+  }
+  .slide {
+    width: 1920px;
+    min-height: 1080px;
+    background: var(--white);
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    border: 0.5px solid var(--g3);
+    box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--blue);
+    padding: 18px 40px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #0D2248;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .header-badge {
+    background: var(--amber);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .header-meta {
+    text-align: right;
+    color: rgba(255,255,255,0.5);
+    font-size: 9px;
+    line-height: 1.7;
+  }
+
+  /* ── EXEC SUMMARY ── */
+  .exec-summary {
+    background: #F0F3F8;
+    border-bottom: 0.5px solid var(--g3);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .exec-label {
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    border-right: 0.5px solid var(--g3);
+    padding-right: 20px;
+  }
+  .exec-text {
+    font-size: 11px;
+    color: var(--black);
+    line-height: 1.6;
+  }
+  .exec-text strong { color: var(--blue); font-weight: 600; }
+
+  /* ── MAIN BODY ── */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-bottom: 0.5px solid var(--g3);
+  }
+  .col {
+    padding: 20px 28px;
+    border-right: 0.5px solid var(--g4);
+  }
+  .col:last-child { border-right: none; }
+  .section-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--g2);
+    margin-bottom: 2px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--blue);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 0.5px solid var(--g4);
+  }
+
+  /* ── COMPARISON TABLE ── */
+  table.comp {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+  table.comp thead tr {
+    background: var(--blue);
+    color: var(--white);
+  }
+  table.comp thead th {
+    padding: 6px 7px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+  table.comp tbody tr {
+    border-bottom: 0.5px solid var(--g4);
+  }
+  table.comp tbody tr:hover { background: #FAFBFD; }
+  table.comp tbody td {
+    padding: 5px 7px;
+    color: var(--black);
+    vertical-align: middle;
+  }
+  table.comp tbody td:first-child { font-weight: 500; }
+  .pill {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .pill-green { background: #D6EFE2; color: var(--green); }
+  .pill-amber { background: #FBF0D4; color: var(--amber); }
+  .pill-red   { background: #FBDCDD; color: var(--red); }
+  .pill-blue  { background: #D6E2F5; color: var(--blue); }
+  .pill-gray  { background: var(--g4); color: var(--g1); }
+
+  /* ── BAR CHART ── */
+  .chart-title-sm { font-size: 9px; color: var(--g1); font-weight: 500; margin-bottom: 8px; }
+  .bar-row { display: flex; align-items: center; margin-bottom: 6px; gap: 6px; }
+  .bar-label { font-size: 8.5px; color: var(--g1); width: 100px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 14px; background: var(--g4); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-val { font-size: 8.5px; color: var(--g1); width: 42px; text-align: right; flex-shrink: 0; }
+  .bar-blue { background: var(--blue); }
+  .bar-blue2 { background: #2E5EA8; }
+  .bar-blue3 { background: #5880C0; }
+  .bar-green { background: var(--green); }
+  .bar-amber { background: var(--amber); }
+  .bar-red   { background: var(--red); }
+
+  .stacked-row { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+  .stacked-label { font-size: 8px; color: var(--g1); width: 36px; flex-shrink:0; }
+  .stacked-bar { flex: 1; height: 16px; display: flex; border-radius: 2px; overflow: hidden; }
+  .stacked-legend { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 8px; color: var(--g2); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
+
+  /* ── MATRIX ── */
+  .matrix-wrap {
+    position: relative;
+    width: 100%;
+    height: 310px;
+    border: 0.5px solid var(--g3);
+    border-radius: 2px;
+    overflow: hidden;
+    background: #FAFBFD;
+  }
+  .matrix-axis-x { position: absolute; bottom: 0; left: 50%; width: 0.5px; height: 100%; background: var(--g3); transform: translateX(-50%); }
+  .matrix-axis-y { position: absolute; left: 0; top: 50%; width: 100%; height: 0.5px; background: var(--g3); transform: translateY(-50%); }
+  .matrix-quad {
+    position: absolute;
+    display: flex; align-items: flex-start; justify-content: flex-start;
+    padding: 6px 8px;
+    font-size: 8px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .mq-tl { top: 0; left: 0; width: 50%; height: 50%; background: rgba(212,146,11,0.06); color: var(--amber); }
+  .mq-tr { top: 0; right: 0; width: 50%; height: 50%; background: rgba(42,125,79,0.06); color: var(--green); }
+  .mq-bl { bottom: 0; left: 0; width: 50%; height: 50%; background: rgba(201,54,60,0.07); color: var(--red); }
+  .mq-br { bottom: 0; right: 0; width: 50%; height: 50%; background: rgba(26,58,107,0.05); color: var(--blue); }
+  .matrix-node {
+    position: absolute;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 600; color: var(--white);
+    text-align: center; line-height: 1.2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transform: translate(-50%, -50%);
+  }
+  .matrix-axis-label { position: absolute; font-size: 7.5px; color: var(--g2); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── METRIC CARDS ── */
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .metric-card { border: 0.5px solid var(--g4); border-radius: 3px; padding: 8px 10px; background: #FAFBFD; }
+  .metric-card-label { font-size: 8px; color: var(--g2); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .metric-card-value { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--blue); font-weight: 700; line-height: 1; }
+  .metric-card-unit { font-size: 9px; color: var(--g2); margin-left: 2px; }
+  .metric-card-delta { font-size: 8px; margin-top: 3px; }
+  .delta-up { color: var(--green); }
+  .strength-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .strength-label { font-size: 8.5px; color: var(--g1); width: 90px; flex-shrink: 0; }
+  .strength-track { flex: 1; height: 6px; background: var(--g4); border-radius: 3px; overflow: hidden; }
+  .strength-fill { height: 100%; border-radius: 3px; }
+
+  /* ── BOTTOM ROW ── */
+  .bottom-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 0.5px solid var(--g3); }
+  .bottom-cell { padding: 14px 28px; border-right: 0.5px solid var(--g4); }
+  .bottom-cell:last-child { border-right: none; }
+  .bottom-cell-title { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g1); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .rag-dot-sm { width: 7px; height: 7px; border-radius: 50%; flex-shrink:0; }
+  .risk-item { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 5px; font-size: 9px; color: var(--black); line-height: 1.45; }
+  .rag-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 3px; flex-shrink:0; }
+  .action-item { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 5px; }
+  .action-num { font-size: 8px; font-weight: 700; color: var(--blue); width: 14px; flex-shrink:0; margin-top:1px; }
+  .action-text { font-size: 9px; color: var(--black); line-height: 1.45; }
+  .divider-label { font-size: 8px; color: var(--g2); text-align: center; margin: 7px 0 5px; }
+
+  /* ── FOOTER ── */
+  .footer { padding: 6px 40px; background: var(--g4); display: flex; align-items: center; justify-content: space-between; }
+  .footer-source { font-size: 8px; color: var(--g2); }
+  .footer-disclaimer { font-size: 8px; color: var(--g3); font-style: italic; max-width: 700px; text-align: center; }
+  .footer-date { font-size: 8px; color: var(--g2); text-align: right; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div>
+      <div class="header-title">GenAI 影片模型市場全面分析</div>
+      <div class="header-sub">Global Generative AI Video Foundation Model Landscape — Competitive Intelligence &amp; Strategic Assessment · 2025 Q1</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:24px;">
+      <div class="header-badge">⚠ 高速演變市場 · 優先關注</div>
+      <div class="header-meta">頁面 01 / 01 &nbsp;|&nbsp; 機密等級：內部<br>版本：v2.4 Final &nbsp;|&nbsp; 策略諮詢部門</div>
+    </div>
+  </div>
+
+  <!-- ══ EXEC SUMMARY ══ -->
+  <div class="exec-summary">
+    <div class="exec-label">Executive<br>Summary</div>
+    <div class="exec-text">
+      GenAI 影片模型市場預計於 2024–2027 年以 <strong>CAGR 67%</strong> 高速擴張，2027 年市場規模料突破 <strong>USD 90 億</strong>，但技術護城河仍淺、頭部競爭格局尚未固化；
+      Sora、Runway Gen-3、Kling 等平台雖各具差異優勢，<strong>計算成本壓縮與商業變現路徑</strong>仍為最大制約因素；
+      企業應在 2024H2 至 2025H1 <strong>優先布局多元 API 整合與垂直場景滲透（廣告/電商），而非過早押注單一基礎模型</strong>。
+    </div>
+  </div>
+
+  <!-- ══ MAIN BODY ══ -->
+  <div class="body">
+
+    <!-- ─── COL A: TABLE ─── -->
+    <div class="col">
+      <div class="section-label">A &nbsp;·&nbsp; 競爭者評級矩陣</div>
+      <div class="section-title">主要平台技術能力對照表</div>
+
+      <table class="comp">
+        <thead>
+          <tr>
+            <th>平台 / 模型</th>
+            <th>出品方</th>
+            <th>最長時長</th>
+            <th>商業可用</th>
+            <th>畫質評分</th>
+            <th>API 開放</th>
+            <th>戰略定位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Sora</td><td>OpenAI</td><td>60s+</td><td><span class="pill pill-amber">限量測試</span></td><td><span class="pill pill-green">★★★★★</span></td><td><span class="pill pill-amber">Beta</span></td><td><span class="pill pill-blue">領導者</span></td></tr>
+          <tr><td>Veo 2</td><td>Google DeepMind</td><td>120s</td><td><span class="pill pill-amber">測試中</span></td><td><span class="pill pill-green">★★★★★</span></td><td><span class="pill pill-gray">規劃中</span></td><td><span class="pill pill-blue">領導者</span></td></tr>
+          <tr><td>Runway Gen-3α</td><td>Runway ML</td><td>10s</td><td><span class="pill pill-green">正式上線</span></td><td><span class="pill pill-green">★★★★☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-green">挑戰者</span></td></tr>
+          <tr><td>Kling 1.5</td><td>快手 Kuaishou</td><td>3 min</td><td><span class="pill pill-green">正式上線</span></td><td><span class="pill pill-amber">★★★★☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-green">挑戰者</span></td></tr>
+          <tr><td>Dream Machine</td><td>Luma AI</td><td>120s</td><td><span class="pill pill-green">正式上線</span></td><td><span class="pill pill-amber">★★★★☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-green">挑戰者</span></td></tr>
+          <tr><td>Pika 2.0</td><td>Pika Labs</td><td>10s</td><td><span class="pill pill-green">正式上線</span></td><td><span class="pill pill-amber">★★★☆☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-amber">利基玩家</span></td></tr>
+          <tr><td>Hailuo / MiniMax</td><td>MiniMax</td><td>6s</td><td><span class="pill pill-green">正式上線</span></td><td><span class="pill pill-amber">★★★☆☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-amber">利基玩家</span></td></tr>
+          <tr><td>Wan 2.1</td><td>阿里巴巴</td><td>無限制</td><td><span class="pill pill-green">開源</span></td><td><span class="pill pill-amber">★★★★☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-blue">顛覆者</span></td></tr>
+          <tr><td>CogVideoX</td><td>清華 THUDM</td><td>10s</td><td><span class="pill pill-green">開源</span></td><td><span class="pill pill-amber">★★★☆☆</span></td><td><span class="pill pill-green">開放</span></td><td><span class="pill pill-gray">觀察中</span></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:14px;">
+        <div class="chart-title-sm">▸ 技術能力向度評分（綜合研究機構評估，滿分 10）</div>
+        <div class="bar-row"><div class="bar-label">視覺真實感</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:88%"></div></div><div class="bar-val">8.8 / 10</div></div>
+        <div class="bar-row"><div class="bar-label">時序一致性</div><div class="bar-track"><div class="bar-fill bar-blue2" style="width:76%"></div></div><div class="bar-val">7.6 / 10</div></div>
+        <div class="bar-row"><div class="bar-label">文本遵循度</div><div class="bar-track"><div class="bar-fill bar-blue3" style="width:82%"></div></div><div class="bar-val">8.2 / 10</div></div>
+        <div class="bar-row"><div class="bar-label">生成速度</div><div class="bar-track"><div class="bar-fill bar-amber" style="width:58%"></div></div><div class="bar-val">5.8 / 10</div></div>
+        <div class="bar-row"><div class="bar-label">成本效益</div><div class="bar-track"><div class="bar-fill bar-red" style="width:45%"></div></div><div class="bar-val">4.5 / 10</div></div>
+        <div class="bar-row"><div class="bar-label">物理合理性</div><div class="bar-track"><div class="bar-fill bar-green" style="width:70%"></div></div><div class="bar-val">7.0 / 10</div></div>
+      </div>
+    </div>
+
+    <!-- ─── COL B: CHARTS ─── -->
+    <div class="col">
+      <div class="section-label">B &nbsp;·&nbsp; 市場規模與融資趨勢</div>
+      <div class="section-title">全球市場預測與資本流向分析</div>
+
+      <div class="chart-title-sm">▸ 全球 GenAI 影片市場規模預測（USD Bn，堆疊結構圖）</div>
+      <div style="margin-bottom:4px;">
+        <div class="stacked-row"><div class="stacked-label">2022</div><div class="stacked-bar"><div style="width:60%;background:#1A3A6B;"></div><div style="width:25%;background:#2E5EA8;"></div><div style="width:15%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$0.9B</div></div>
+        <div class="stacked-row"><div class="stacked-label">2023</div><div class="stacked-bar"><div style="width:52%;background:#1A3A6B;"></div><div style="width:30%;background:#2E5EA8;"></div><div style="width:18%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$2.8B</div></div>
+        <div class="stacked-row"><div class="stacked-label">2024</div><div class="stacked-bar"><div style="width:48%;background:#1A3A6B;"></div><div style="width:32%;background:#2E5EA8;"></div><div style="width:20%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$7.1B</div></div>
+        <div class="stacked-row"><div class="stacked-label">2025E</div><div class="stacked-bar"><div style="width:44%;background:#1A3A6B;"></div><div style="width:34%;background:#2E5EA8;"></div><div style="width:22%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$18.4B</div></div>
+        <div class="stacked-row"><div class="stacked-label">2026E</div><div class="stacked-bar"><div style="width:40%;background:#1A3A6B;"></div><div style="width:36%;background:#2E5EA8;"></div><div style="width:24%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$42.0B</div></div>
+        <div class="stacked-row"><div class="stacked-label">2027E</div><div class="stacked-bar"><div style="width:38%;background:#1A3A6B;"></div><div style="width:36%;background:#2E5EA8;"></div><div style="width:26%;background:#A0BAE8;"></div></div><div style="font-size:8px;color:var(--g2);margin-left:6px;white-space:nowrap;">$89.6B</div></div>
+      </div>
+      <div class="stacked-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#1A3A6B;"></div>企業 B2B SaaS</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2E5EA8;"></div>創作者平台</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#A0BAE8;"></div>廣告 / 行銷</div>
+      </div>
+
+      <div class="divider-label">── 頭部新創融資輪次 ──</div>
+
+      <div class="chart-title-sm">▸ 主要企業融資規模（USD M，2022–2024）</div>
+      <div class="bar-row"><div class="bar-label">Runway ML</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:73%"></div></div><div class="bar-val">$236M C輪</div></div>
+      <div class="bar-row"><div class="bar-label">HeyGen</div><div class="bar-track"><div class="bar-fill bar-blue2" style="width:19%"></div></div><div class="bar-val">$60M A輪</div></div>
+      <div class="bar-row"><div class="bar-label">Pika Labs</div><div class="bar-track"><div class="bar-fill bar-blue3" style="width:25%"></div></div><div class="bar-val">$80M A輪</div></div>
+      <div class="bar-row"><div class="bar-label">Luma AI</div><div class="bar-track"><div class="bar-fill bar-green" style="width:14%"></div></div><div class="bar-val">$43M B輪</div></div>
+      <div class="bar-row"><div class="bar-label">Kling / 快手</div><div class="bar-track"><div class="bar-fill bar-amber" style="width:100%"></div></div><div class="bar-val">內部孵化</div></div>
+
+      <div class="divider-label">── 垂直行業採用率 ──</div>
+
+      <div class="chart-title-sm">▸ 企業採用滲透率 by 行業（2024 估算）</div>
+      <div class="bar-row"><div class="bar-label">廣告 / 行銷</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:62%"></div></div><div class="bar-val">62%</div></div>
+      <div class="bar-row"><div class="bar-label">媒體 / 娛樂</div><div class="bar-track"><div class="bar-fill bar-blue2" style="width:48%"></div></div><div class="bar-val">48%</div></div>
+      <div class="bar-row"><div class="bar-label">教育 / eLearning</div><div class="bar-track"><div class="bar-fill bar-blue3" style="width:34%"></div></div><div class="bar-val">34%</div></div>
+      <div class="bar-row"><div class="bar-label">電商 / 零售</div><div class="bar-track"><div class="bar-fill bar-green" style="width:29%"></div></div><div class="bar-val">29%</div></div>
+      <div class="bar-row"><div class="bar-label">醫療 / 健康</div><div class="bar-track"><div class="bar-fill bar-amber" style="width:11%"></div></div><div class="bar-val">11%</div></div>
+      <div class="bar-row"><div class="bar-label">金融 / FinTech</div><div class="bar-track"><div class="bar-fill bar-red" style="width:9%"></div></div><div class="bar-val">9%</div></div>
+    </div>
+
+    <!-- ─── COL C: MATRIX + KPI ─── -->
+    <div class="col">
+      <div class="section-label">C &nbsp;·&nbsp; 策略定位框架 × KPI 儀表板</div>
+      <div class="section-title">競爭定位 2×2 矩陣與核心指標</div>
+
+      <div class="matrix-wrap">
+        <div class="matrix-axis-x"></div>
+        <div class="matrix-axis-y"></div>
+        <div class="matrix-quad mq-tl">觀望候補</div>
+        <div class="matrix-quad mq-tr">策略領導者</div>
+        <div class="matrix-quad mq-bl">退出風險</div>
+        <div class="matrix-quad mq-br">垂直利基者</div>
+        <div class="matrix-axis-label" style="bottom:4px;left:6px;">← 市場滲透率低</div>
+        <div class="matrix-axis-label" style="bottom:4px;right:6px;">市場滲透率高 →</div>
+        <div class="matrix-axis-label" style="top:4px;left:6px;">↑ 技術成熟度高</div>
+        <div class="matrix-axis-label" style="top:50%;left:6px;margin-top:8px;">↓ 技術成熟度低</div>
+        <!-- Nodes -->
+        <div class="matrix-node" style="left:72%;top:20%;background:#1A3A6B;width:52px;height:52px;font-size:8.5px;">Sora<br>OpenAI</div>
+        <div class="matrix-node" style="left:65%;top:27%;background:#2A7D4F;width:46px;height:46px;font-size:7.5px;">Veo 2<br>Google</div>
+        <div class="matrix-node" style="left:78%;top:35%;background:#1A5A3A;width:40px;height:40px;font-size:7.5px;">Wan<br>2.1</div>
+        <div class="matrix-node" style="left:65%;top:42%;background:#2E5EA8;">Runway<br>Gen-3</div>
+        <div class="matrix-node" style="left:74%;top:50%;background:#2E5EA8;width:44px;height:44px;">Kling<br>快手</div>
+        <div class="matrix-node" style="left:55%;top:56%;background:#D4920B;width:42px;height:42px;">Luma<br>AI</div>
+        <div class="matrix-node" style="left:48%;top:44%;background:#8855AA;width:40px;height:40px;font-size:7.5px;">Hey<br>Gen</div>
+        <div class="matrix-node" style="left:38%;top:64%;background:#C9363C;width:38px;height:38px;font-size:7.5px;">Pika<br>2.0</div>
+        <div class="matrix-node" style="left:28%;top:70%;background:#888;width:36px;height:36px;font-size:7px;">Cog<br>VideoX</div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <div class="chart-title-sm" style="margin-bottom:6px;">▸ 核心 KPI 儀表板（2024 綜合估算）</div>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-card-label">市場 CAGR</div>
+            <div class="metric-card-value">67<span class="metric-card-unit">%</span></div>
+            <div class="metric-card-delta delta-up">▲ +14pp YoY 加速</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">2027E 市場規模</div>
+            <div class="metric-card-value">$90<span class="metric-card-unit">Bn</span></div>
+            <div class="metric-card-delta delta-up">▲ 較 2024 成長 12.6×</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">每分鐘生成成本</div>
+            <div class="metric-card-value">$0.8<span class="metric-card-unit">–6</span></div>
+            <div class="metric-card-delta delta-up">▼ 年降幅 ~40%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">活躍開發者</div>
+            <div class="metric-card-value">2.1<span class="metric-card-unit">M+</span></div>
+            <div class="metric-card-delta delta-up">▲ +180% YoY</div>
+          </div>
+        </div>
+
+        <div class="chart-title-sm" style="margin-bottom:4px;">▸ 護城河強度對比（Sora / Runway / Kling）</div>
+        <div style="font-size:8px;color:var(--g2);margin-bottom:5px;display:flex;gap:10px;">
+          <span style="color:#1A3A6B;font-weight:600;">■ Sora</span>
+          <span style="color:#2E5EA8;font-weight:600;">■ Runway</span>
+          <span style="color:#2A7D4F;font-weight:600;">■ Kling</span>
+        </div>
+        <div style="display:grid;grid-template-columns:90px 1fr;gap:3px 6px;align-items:center;font-size:8px;color:var(--g1);">
+          <div>模型品質</div><div style="display:flex;gap:2px;">
+            <div style="flex:92;height:6px;background:#1A3A6B;border-radius:1px;"></div><div style="flex:8;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:78;height:6px;background:#2E5EA8;border-radius:1px;"></div><div style="flex:22;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:72;height:6px;background:#2A7D4F;border-radius:1px;"></div><div style="flex:28;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div>生態整合</div><div style="display:flex;gap:2px;">
+            <div style="flex:88;height:6px;background:#1A3A6B;border-radius:1px;"></div><div style="flex:12;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:82;height:6px;background:#2E5EA8;border-radius:1px;"></div><div style="flex:18;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:55;height:6px;background:#2A7D4F;border-radius:1px;"></div><div style="flex:45;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div>商業化成熟</div><div style="display:flex;gap:2px;">
+            <div style="flex:40;height:6px;background:#1A3A6B;border-radius:1px;"></div><div style="flex:60;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:85;height:6px;background:#2E5EA8;border-radius:1px;"></div><div style="flex:15;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+          <div></div><div style="display:flex;gap:2px;">
+            <div style="flex:76;height:6px;background:#2A7D4F;border-radius:1px;"></div><div style="flex:24;height:6px;background:var(--g4);border-radius:1px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BOTTOM ROW ══ -->
+  <div class="bottom-row">
+
+    <!-- D: RISKS -->
+    <div class="bottom-cell">
+      <div class="bottom-cell-title"><div class="rag-dot-sm" style="background:var(--red);"></div> D &nbsp;關鍵風險與脆弱點</div>
+      <div class="risk-item"><div class="rag-dot" style="background:var(--red);"></div><div><strong>版權侵權訴訟（RAG: 紅）</strong> — 生成內容涉及訓練資料版權，好萊塢六大及主要內容授權方持續施壓，訴訟成本可能構成重大財務負擔。</div></div>
+      <div class="risk-item"><div class="rag-dot" style="background:var(--red);"></div><div><strong>算力集中依賴（RAG: 紅）</strong> — NVIDIA H100/H200 短缺持續，GPU 採購成本佔頭部玩家 COGS 逾 60%，供應鏈脆弱性高。</div></div>
+      <div class="risk-item"><div class="rag-dot" style="background:var(--amber);"></div><div><strong>深偽監管收緊（RAG: 黃）</strong> — EU AI Act 與美國 DEFIANCE Act 已生效，換臉與數位複製功能面臨合規調整壓力，開發時間線受影響。</div></div>
+      <div class="risk-item"><div class="rag-dot" style="background:var(--amber);"></div><div><strong>開源平民化壓縮定價（RAG: 黃）</strong> — Wan 2.1、CogVideoX 快速逼近商業模型品質，Runway 等 SaaS 毛利率面臨壓縮，訂閱留存率風險升高。</div></div>
+      <div class="risk-item"><div class="rag-dot" style="background:var(--green);"></div><div><strong>中美技術脫鉤（RAG: 綠）</strong> — 出口管制影響中國廠商 GPU 取得，短期可能反向強化西方平台的市場地位，為機會性窗口。</div></div>
+    </div>
+
+    <!-- E: TRIGGERS -->
+    <div class="bottom-cell">
+      <div class="bottom-cell-title"><div class="rag-dot-sm" style="background:var(--amber);"></div> E &nbsp;觸發條件與前瞻情境</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;">
+        <div style="border:0.5px solid #FBDCDD;border-radius:3px;padding:7px;background:#FFF8F8;">
+          <div style="font-size:8px;font-weight:700;color:var(--red);margin-bottom:4px;">⚡ 悲觀情境（P30）</div>
+          <div style="font-size:8.5px;color:var(--black);line-height:1.55;">版權訴訟獲判停止訓練資料使用；GPU 出口管制擴大；大型平台進入壓縮定價。2027E 規模縮至 <strong>$35–50B</strong>。</div>
+        </div>
+        <div style="border:0.5px solid #D6F0E4;border-radius:3px;padding:7px;background:#F6FDF9;">
+          <div style="font-size:8px;font-weight:700;color:var(--green);margin-bottom:4px;">🚀 樂觀情境（P30）</div>
+          <div style="font-size:8.5px;color:var(--black);line-height:1.55;">版權授權框架確立；生成成本 &lt; $0.1/min；即時生成達成。2027E 市場突破 <strong>$150B</strong>，廣告成為第一大場景。</div>
+        </div>
+      </div>
+      <div style="font-size:8px;font-weight:600;color:var(--g1);margin-bottom:5px;">▸ 關鍵觀察指標（未來 6–12 個月）</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">
+        <span class="pill pill-blue">Sora API 公開時程</span>
+        <span class="pill pill-blue">Veo 2 B2B 定價策略</span>
+        <span class="pill pill-amber">加州 AB 2602 執法</span>
+        <span class="pill pill-amber">TSMC CoWoS 產能釋放</span>
+        <span class="pill pill-green">Runway IPO 進度</span>
+        <span class="pill pill-green">Adobe Firefly Video 整合度</span>
+        <span class="pill pill-gray">中國自主 GPU 成熟度</span>
+      </div>
+    </div>
+
+    <!-- F: STRATEGY -->
+    <div class="bottom-cell">
+      <div class="bottom-cell-title"><div class="rag-dot-sm" style="background:var(--green);"></div> F &nbsp;策略建議與行動方案</div>
+      <div class="action-item"><div class="action-num">01</div><div class="action-text"><strong>短期（0–6M）：多模型 API 並行。</strong>避免押注單一供應商，建立 Runway + Kling + Luma 三路並行整合，降低單點失效風險，維持議價彈性。</div></div>
+      <div class="action-item"><div class="action-num">02</div><div class="action-text"><strong>短期：廣告 / 電商優先滲透。</strong>此兩場景具備最高投資回報率，優先構建工作流自動化與品牌授權模型，快速取得可量化商業成果。</div></div>
+      <div class="action-item"><div class="action-num">03</div><div class="action-text"><strong>中期（6–18M）：開源模型自部署評估。</strong>Wan 2.1 等開源方案具備私有化潛力，可降低 SaaS 長期訂閱成本 30–55%，適合資料安全要求高的企業客群。</div></div>
+      <div class="action-item"><div class="action-num">04</div><div class="action-text"><strong>長期（18M+）：版權合規能力建立。</strong>主動與 MPAA / 版權方洽談授權框架，版權清晰度正快速成為 B2B 客戶採購的核心評估條件，先行者可建立差異化。</div></div>
+      <div class="action-item"><div class="action-num">05</div><div class="action-text"><strong>持續：客觀技術評比機制。</strong>建立季度 FID / FVD / CLIPSIM 指標追蹤框架，確保技術選型基於客觀數據，而非供應商行銷敘事與媒體炒作。</div></div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <div class="footer-source">資料來源：Grand View Research、Bloomberg Intelligence、Pitchbook、CB Insights、The Information、各公司公開發布（2023–2024）；市場規模為內部模型估算，非官方數據</div>
+    <div class="footer-disclaimer">本報告僅供內部策略參考，不構成投資建議。所有前瞻性陳述涉及不確定性，實際結果可能與預測存在重大差異。</div>
+    <div class="footer-date">策略諮詢部門 &nbsp;|&nbsp; v2.4 Final &nbsp;|&nbsp; 2025 Q1 &nbsp;|&nbsp; 機密：內部使用</div>
+  </div>
+
+</div>
+</body>
+</html>
