@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新竹市北門、舊社、載熙三校班級數、學生數與小一新生數 (104-114學年度)數位儀錶板</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 使用 Inter 字體 */
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">新竹市北門、舊社、載熙三校班級數、學生數與小一新生數 (104-114學年度)數位儀錶板)</h1>
+            <p class="text-gray-600 mt-2">
+                此圖表根據您提供的完整數據（104至114學年度）製作。
+            </p>
+        </header>
+
+        <!-- 圖表容器 -->
+        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+            
+            <!-- 圖表一：全校總班級數 -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">全校總班級數 (104-114學年度)</h2>
+                <div class="h-64 md:h-96">
+                    <canvas id="classesChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 圖表二：全校總學生數 -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">全校總學生數 (104-114學年度)</h2>
+                <div class="h-64 md:h-96">
+                    <canvas id="totalStudentsChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 圖表三：小一新生數 -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">小一新生數 (104-114學年度)</h2>
+                <div class="h-64 md:h-96">
+                    <canvas id="newStudentsChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 完整的 104-114 學年度數據 (結合 CSV 檔案和您貼上的資料)
+        // 移除了數據中的空格和特殊字符( )
+        const csvData = `學年度,學校名稱,總班級數 (班),總學生數 (人),小一新生數 (人)
+104,北門國小,40,999,153
+,舊社國小,43,1074,169
+,載熙國小,49,1303,211
+105,北門國小,40,993,144
+,舊社國小,43,1056,168
+,載熙國小,50,1316,211
+106,北門國小,39,967,156
+,舊社國小,43,1056,190
+,載熙國小,51,1324,205
+107,北門國小,40,998,185
+,舊社國小,45,1127,260
+,載熙國小,51,1312,229
+108,北門國小,41,995,195
+,舊社國小,47,1199,244
+,載熙國小,51,1298,228
+109,北門國小,40,999,171
+,舊社國小,48,1226,197
+,載熙國小,52,1309,255
+110,北門國小,43,1039,193
+,舊社國小,50,1255,216
+,載熙國小,54,1355,252
+111,北門國小,43,1032,166
+,舊社國小,51,1298,206
+,載熙國小,55,1367,222
+112,北門國小,40,1023,141
+,舊社國小,50,1301,185
+,載熙國小,53,1408,209
+113,北門國小,40,1001,162
+,舊社國小,46,1228,165
+,載熙國小,54,1382,219
+114,北門國小,38,924,111
+,舊社國小,43,1112,138
+,載熙國小,53,1359,203
+`;
+
+        /**
+         * 解析 CSV 數據並處理合併的儲存格
+         * @param {string} csv - CSV 格式的字串
+         * @returns {Array<Object>} 解析後的數據陣列
+         */
+        function parseSchoolData(csv) {
+            const lines = csv.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim()); // "學年度", "學校名稱", "總班級數 (班)", ...
+            
+            const data = [];
+            let currentYear = '';
+
+            for (let i = 1; i < lines.length; i++) {
+                // 清理數據中可能存在的空白字符 (例如 \t 或 &nbsp; 對應的 \u00A0)
+                const cleanedLine = lines[i].replace(/[\s\u00A0]+/g, ' ').trim();
+                const values = cleanedLine.split(',');
+                
+                // 處理學年度合併儲存格
+                const year = values[0].trim();
+                if (year) {
+                    currentYear = year;
+                }
+                
+                const schoolName = values[1].trim();
+                const classes = parseInt(values[2], 10);
+                const totalStudents = parseInt(values[3], 10);
+                const newStudents = parseInt(values[4], 10);
+                
+                if (schoolName && !isNaN(classes) && !isNaN(totalStudents) && !isNaN(newStudents)) {
+                    data.push({
+                        year: currentYear,
+                        school: schoolName,
+                        classes: classes,
+                        totalStudents: totalStudents,
+                        newStudents: newStudents
+                    });
+                }
+            }
+            return data;
+        }
+
+        /**
+         * 根據學校和指標提取數據
+         * @param {Array<Object>} parsedData - 解析後的總數據
+         * @param {string} schoolName - 學校名稱 (例如 "北門國小")
+         * @param {string} metric - 指標 (例如 "classes")
+         * @param {Array<string>} labels - X軸標籤 (學年度)
+         * @returns {Array<number>} 對應的數據陣列
+         */
+        function getDataForSchool(parsedData, schoolName, metric, labels) {
+            return labels.map(year => {
+                const entry = parsedData.find(d => d.year === year && d.school === schoolName);
+                return entry ? entry[metric] : null;
+            });
+        }
+
+        // 圖表共用顏色
+        const schoolColors = {
+            '北門國小': 'rgb(239, 68, 68)',  // red-500
+            '舊社國小': 'rgb(59, 130, 246)', // blue-500
+            '載熙國小': 'rgb(34, 197, 94)', // green-500
+        };
+
+        /**
+         * 創建一個新的折線圖
+         * @param {string} canvasId - Canvas 元素的 ID
+         * @param {string} title - Y 軸標題
+         * @param {Array<string>} labels - X 軸標籤 (學年度)
+         * @param {Array<Object>} datasets - Chart.js 的 datasets
+         */
+        function createLineChart(canvasId, title, labels, datasets) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) {
+                console.error(`Canvas with id ${canvasId} not found.`);
+                return;
+            }
+            
+            new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '學年度'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: title
+                            },
+                            beginAtZero: false // Y 軸不一定從 0 開始
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1 // 輕微的曲線
+                        }
+                    }
+                }
+            });
+        }
+
+        // 等待 DOM 加載完成後執行
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // 1. 解析數據
+                const parsedData = parseSchoolData(csvData);
+                
+                // 2. 準備 X 軸標籤 (學年度)
+                const labels = [...new Set(parsedData.map(d => d.year))].sort();
+                
+                // 3. 準備三個圖表的 datasets
+                const schools = ['北門國小', '舊社國小', '載熙國小'];
+                
+                const classesDatasets = schools.map(school => ({
+                    label: school,
+                    data: getDataForSchool(parsedData, school, 'classes', labels),
+                    borderColor: schoolColors[school],
+                    backgroundColor: schoolColors[school],
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }));
+                
+                const totalStudentsDatasets = schools.map(school => ({
+                    label: school,
+                    data: getDataForSchool(parsedData, school, 'totalStudents', labels),
+                    borderColor: schoolColors[school],
+                    backgroundColor: schoolColors[school],
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }));
+                
+                const newStudentsDatasets = schools.map(school => ({
+                    label: school,
+                    data: getDataForSchool(parsedData, school, 'newStudents', labels),
+                    borderColor: schoolColors[school],
+                    backgroundColor: schoolColors[school],
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }));
+
+                // 4. 繪製圖表
+                createLineChart('classesChart', '班級數 (班)', labels, classesDatasets);
+                createLineChart('totalStudentsChart', '學生數 (人)', labels, totalStudentsDatasets);
+                createLineChart('newStudentsChart', '新生數 (人)', labels, newStudentsDatasets);
+
+            } catch (error) {
+                console.error("圖表繪製失敗:", error);
+                document.body.innerHTML = "<div class='text-red-500 p-8'>圖表加載失敗，請檢查瀏覽器控制台獲取錯誤訊息。</div>";
+            }
+        });
+
+    </script>
+</body>
+</html>
