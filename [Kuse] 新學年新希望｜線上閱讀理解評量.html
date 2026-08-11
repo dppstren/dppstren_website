@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新學年新希望｜線上閱讀理解評量</title>
+<meta name="description" content="康軒國語三上第一課新學年新希望 PIRLS閱讀理解層次線上評量，提供點選、拖曳排序、文字輸入三種作答方式，具備朗讀與無障礙設計">
+<style>
+:root{
+  --color-bg:#f5f7f4;
+  --color-surface:#ffffff;
+  --color-ink:#1a1a1a;
+  --color-ink-soft:#333333;
+  --color-primary:#0b5d3b;
+  --color-primary-dark:#073d27;
+  --color-accent:#8a5c00;
+  --color-border:#4d4d4d;
+  --color-focus:#0b3d91;
+  --color-success-bg:#e6f4ea;
+  --color-success-border:#1e5f2e;
+  --color-error-bg:#fdecea;
+  --color-error-border:#8a1f11;
+  --font-size-base:20px;
+  --font-size-lg:24px;
+  --font-size-xl:30px;
+  --font-size-xxl:36px;
+  --radius:14px;
+  --focus-ring: 3px solid var(--color-focus);
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,sans-serif;
+  background:var(--color-bg);
+  color:var(--color-ink);
+  font-size:var(--font-size-base);
+  line-height:1.75;
+  min-height:100vh;
+}
+#app{max-width:980px;margin:0 auto;padding:20px 16px 64px;width:100%;}
+img,svg{max-width:100%;}
+
+/* Skip link */
+.skip-link{
+  position:absolute;left:-9999px;top:0;
+  background:var(--color-primary-dark);color:#fff;
+  padding:12px 20px;font-size:var(--font-size-base);z-index:999;border-radius:0 0 8px 0;
+}
+.skip-link:focus{left:0;}
+
+/* Header */
+.app-header{
+  background:var(--color-surface);
+  border:2px solid var(--color-border);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  margin-bottom:20px;
+}
+.app-header h1{
+  font-size:var(--font-size-xl);
+  margin:0 0 8px;
+  color:var(--color-primary-dark);
+  font-weight:900;
+}
+.app-header .subtitle{font-size:var(--font-size-base);color:var(--color-ink-soft);margin:0;}
+.meta-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.badge{
+  border:2px solid var(--color-primary-dark);
+  color:var(--color-primary-dark);
+  background:#eef6f0;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:16px;
+  font-weight:700;
+}
+
+/* Info panels (goal / exclusion) */
+.info-panel{
+  border:2px dashed var(--color-border);
+  border-radius:var(--radius);
+  padding:16px 20px;
+  margin-bottom:16px;
+  background:var(--color-surface);
+  font-size:18px;
+}
+.info-panel strong{color:var(--color-primary-dark);}
+.info-panel.exclusion{border-style:solid;background:#fff8ea;border-color:var(--color-accent);}
+
+/* Progress */
+.progress-wrap{margin:20px 0;}
+.progress-track{
+  background:#e0e0e0;border-radius:999px;height:20px;overflow:hidden;border:2px solid var(--color-border);
+}
+.progress-fill{
+  background:var(--color-primary);height:100%;transition:width .3s ease;
+}
+.progress-label{font-size:18px;font-weight:700;margin-top:8px;text-align:right;}
+
+/* Passage card */
+.passage-card{
+  background:var(--color-surface);
+  border:2px solid var(--color-border);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  margin-bottom:20px;
+}
+.passage-card h2{font-size:var(--font-size-lg);margin:0 0 12px;color:var(--color-primary-dark);}
+.passage-card p{font-size:var(--font-size-base);margin:0 0 14px;}
+.passage-toggle{margin-top:8px;}
+
+/* Read-aloud controls */
+.audio-controls{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px;
+}
+.btn{
+  font-size:18px;
+  font-weight:700;
+  padding:12px 20px;
+  border-radius:10px;
+  border:2px solid var(--color-border);
+  background:var(--color-surface);
+  color:var(--color-ink);
+  cursor:pointer;
+  min-height:48px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{background:#eef0ee;}
+.btn:focus-visible{outline:var(--focus-ring);outline-offset:2px;}
+.btn-primary{background:var(--color-primary);border-color:var(--color-primary-dark);color:#fff;}
+.btn-primary:hover{background:var(--color-primary-dark);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+.btn-outline{background:#fff;}
+.btn[aria-pressed="true"]{background:var(--color-primary-dark);color:#fff;border-color:var(--color-primary-dark);}
+
+/* keyword glossary */
+.kw{
+  text-decoration:underline dotted 2px;
+  text-underline-offset:4px;
+  cursor:pointer;
+  font-weight:700;
+  background:none;border:none;padding:0;
+  font:inherit;color:inherit;
+}
+.kw:focus-visible{outline:var(--focus-ring);outline-offset:2px;}
+.kw-pop{
+  display:none;
+  margin:8px 0 0;
+  padding:12px 16px;
+  border:2px solid var(--color-accent);
+  border-radius:10px;
+  background:#fff8ea;
+  font-size:18px;
+}
+.kw-pop.open{display:block;}
+
+/* Question card */
+.question-card{
+  background:var(--color-surface);
+  border:2px solid var(--color-border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:20px;
+}
+.q-level-tag{
+  display:inline-block;
+  font-size:15px;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:999px;
+  border:2px solid var(--color-primary-dark);
+  color:var(--color-primary-dark);
+  margin-bottom:12px;
+}
+.q-stem{
+  font-size:var(--font-size-lg);
+  font-weight:700;
+  margin:0 0 18px;
+  line-height:1.7;
+}
+
+/* Mode switcher */
+.mode-switch{
+  display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;
+  border-top:2px solid #ddd;border-bottom:2px solid #ddd;padding:16px 0;
+}
+.mode-switch .btn{flex:1 1 auto;justify-content:center;min-width:150px;}
+
+/* Click mode options */
+.options-list{display:flex;flex-direction:column;gap:14px;}
+.option-btn{
+  display:flex;align-items:center;gap:14px;
+  width:100%;
+  text-align:left;
+  font-size:var(--font-size-base);
+  font-weight:600;
+  padding:16px 18px;
+  border:3px solid var(--color-border);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+  min-height:60px;
+}
+.option-btn:hover{background:#f0f4f0;}
+.option-btn:focus-visible{outline:var(--focus-ring);outline-offset:3px;}
+.option-prefix{
+  flex:0 0 auto;
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid var(--color-border);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;
+}
+.option-btn[aria-pressed="true"]{
+  border-color:var(--color-focus);
+  background:#eaf0fb;
+}
+.option-btn[aria-pressed="true"] .option-prefix{background:var(--color-focus);color:#fff;border-color:var(--color-focus);}
+.option-btn.marked-correct{border-color:var(--color-success-border);background:var(--color-success-bg);}
+.option-btn.marked-correct::after{content:"✔ 正確答案";margin-left:auto;font-weight:900;}
+.option-btn.marked-incorrect{border-color:var(--color-error-border);background:var(--color-error-bg);}
+.option-btn.marked-incorrect::after{content:"✘ 你的選擇";margin-left:auto;font-weight:900;}
+
+/* Dragdrop mode */
+.dragdrop-instruction{font-size:18px;margin-bottom:14px;font-weight:600;}
+.dd-pool, .dd-target{
+  display:flex;flex-wrap:wrap;gap:10px;
+  min-height:70px;
+  border:2px dashed var(--color-border);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:14px;
+}
+.dd-target{border-style:solid;background:#f6f8f6;}
+.dd-chip{
+  padding:12px 16px;
+  border:3px solid var(--color-border);
+  border-radius:10px;
+  background:#fff;
+  font-size:18px;font-weight:700;
+  cursor:grab;
+  min-height:48px;
+  display:flex;align-items:center;
+  user-select:none;
+}
+.dd-chip:focus-visible{outline:var(--focus-ring);outline-offset:3px;}
+.dd-chip.grabbed{background:#eaf0fb;border-color:var(--color-focus);}
+.dd-slot{
+  min-width:150px;min-height:52px;
+  border:2px dashed #999;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:#666;
+}
+.dd-keyboard-hint{font-size:15px;color:#555;margin-top:6px;}
+.dd-order-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+
+/* Text mode */
+.text-instruction{font-size:18px;margin-bottom:10px;font-weight:600;}
+.text-answer-input{
+  width:100%;font-size:var(--font-size-base);
+  padding:14px 16px;border:3px solid var(--color-border);border-radius:10px;
+  min-height:60px;font-family:inherit;
+}
+.text-answer-input:focus-visible{outline:var(--focus-ring);outline-offset:2px;}
+
+/* Feedback panel */
+.feedback-panel{
+  margin-top:20px;padding:16px 20px;border-radius:10px;border:3px solid var(--color-border);
+  font-size:18px;
+}
+.feedback-panel.is-4, .feedback-panel.is-3{background:var(--color-success-bg);border-color:var(--color-success-border);}
+.feedback-panel.is-2{background:#fff8ea;border-color:var(--color-accent);}
+.feedback-panel.is-1{background:var(--color-error-bg);border-color:var(--color-error-border);}
+.feedback-level{font-weight:900;font-size:20px;margin-bottom:6px;}
+.feedback-icon{font-weight:900;margin-right:8px;}
+
+/* Nav */
+.nav-row{display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap;}
+
+/* Result view */
+.result-card{
+  background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius);
+  padding:28px 24px;text-align:left;
+}
+.result-card h2{font-size:var(--font-size-xl);color:var(--color-primary-dark);margin-top:0;}
+.result-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:20px 0;}
+.result-stat{border:2px solid var(--color-border);border-radius:10px;padding:16px;text-align:center;}
+.result-stat .num{font-size:var(--font-size-xxl);font-weight:900;color:var(--color-primary-dark);}
+.result-stat .lbl{font-size:16px;color:var(--color-ink-soft);}
+.review-item{border-top:2px solid #ddd;padding:14px 0;}
+.review-item .rq{font-weight:700;font-size:18px;margin-bottom:6px;}
+
+/* Utility */
+.visually-hidden{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+.hidden{display:none !important;}
+
+/* Accessibility bar */
+.a11y-bar{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-bottom:14px;
+}
+
+/* Font scaling classes (must not break layout at 2x) */
+body.font-scale-2 { --font-size-base:40px; --font-size-lg:44px; --font-size-xl:52px; --font-size-xxl:60px; }
+body.font-scale-15 { --font-size-base:30px; --font-size-lg:34px; --font-size-xl:40px; --font-size-xxl:46px; }
+
+/* ============ 響應式設計 (Responsive Design) ============ */
+/* 斷點策略：手機 ≤600px／平板 601-1024px／桌面 >1024px，皆採流動排版與觸控友善尺寸 */
+
+/* ---- 平板 (601px - 1024px) ---- */
+@media (max-width:1024px){
+  #app{max-width:100%;padding:16px 20px 56px;}
+  .app-header{padding:18px 20px;}
+  .result-summary-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+}
+
+/* ---- 手機橫向與小平板 (≤768px) ---- */
+@media (max-width:768px){
+  :root{
+    --font-size-base:19px;
+    --font-size-lg:22px;
+    --font-size-xl:26px;
+    --font-size-xxl:32px;
+  }
+  #app{padding:14px 12px 48px;}
+  .app-header{padding:16px 16px;text-align:left;}
+  .app-header .a11y-bar{justify-content:flex-start;}
+  .meta-badges{gap:6px;}
+  .badge{font-size:14px;padding:5px 10px;}
+  .passage-card,.question-card,.result-card{padding:16px 16px;}
+  .audio-controls{flex-direction:column;align-items:stretch;}
+  .audio-controls .btn{width:100%;justify-content:center;}
+  .mode-switch{flex-direction:column;}
+  .mode-switch .btn{width:100%;min-width:0;}
+  .dd-pool,.dd-target{padding:10px;}
+  .dd-chip{width:100%;justify-content:flex-start;}
+  .dd-order-list{width:100%;}
+}
+
+/* ---- 手機直向 (≤600px) ---- */
+@media (max-width:600px){
+  #app{padding:12px 10px 44px;}
+  .app-header{border-radius:10px;padding:14px;}
+  .app-header h1{font-size:24px;line-height:1.4;}
+  .app-header .subtitle{font-size:16px;}
+  .meta-badges{flex-direction:column;align-items:flex-start;}
+  .badge{width:100%;text-align:center;}
+  .a11y-bar{width:100%;justify-content:center;}
+  .a11y-bar .btn{flex:1 1 auto;justify-content:center;padding:10px 8px;font-size:15px;}
+  .info-panel{padding:14px 16px;font-size:16px;}
+  .passage-card h2,.question-card .q-stem{font-size:var(--font-size-lg);}
+  .passage-card,.question-card,.result-card{padding:14px;border-radius:10px;}
+  .progress-label{text-align:left;}
+  .option-btn{padding:14px 12px;font-size:18px;gap:10px;}
+  .option-prefix{width:32px;height:32px;font-size:15px;}
+  .mode-switch .btn{min-width:100%;font-size:17px;padding:12px 14px;}
+  .nav-row{flex-direction:column;}
+  .nav-row .btn{width:100%;justify-content:center;}
+  .dd-chip{font-size:17px;padding:12px 14px;}
+  .text-answer-input{font-size:18px;padding:12px 14px;}
+  .result-summary-grid{grid-template-columns:repeat(2,1fr);}
+  .result-card h2{font-size:22px;}
+  .review-item .rq{font-size:16px;}
+}
+
+/* ---- 極小螢幕 (≤380px) ---- */
+@media (max-width:380px){
+  .app-header h1{font-size:21px;}
+  .result-summary-grid{grid-template-columns:1fr;}
+  .result-stat .num{font-size:28px;}
+}
+
+/* ---- 大螢幕：限制最大寬度並置中，避免行長過寬影響可讀性 ---- */
+@media (min-width:1400px){
+  #app{max-width:1080px;}
+}
+
+/* ---- 觸控裝置：加大可點擊區域，避免懸停態殘留 ---- */
+@media (hover:none) and (pointer:coarse){
+  .btn,.option-btn,.dd-chip,.kw{min-height:48px;}
+  .btn:hover,.option-btn:hover{background:inherit;}
+  .btn-primary:hover{background:var(--color-primary);}
+}
+
+/* ---- 直向手機時，字級放大 2 倍仍不得破版：縮小外距與圓角以擠出空間 ---- */
+@media (max-width:600px){
+  body.font-scale-2 #app,body.font-scale-15 #app{padding-left:8px;padding-right:8px;}
+  body.font-scale-2 .passage-card,body.font-scale-15 .passage-card,
+  body.font-scale-2 .question-card,body.font-scale-15 .question-card{padding:12px;}
+  body.font-scale-2 .meta-badges .badge,body.font-scale-15 .meta-badges .badge{font-size:15px;}
+}
+
+/* 尊重使用者「減少動態效果」偏好設定 */
+@media (prefers-reduced-motion: reduce){
+  .progress-fill{transition:none;}
+  *{scroll-behavior:auto !important;}
+}
+
+/* High contrast focus everywhere */
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:var(--focus-ring);outline-offset:2px;
+}
+
+</style>
+</head>
+<body>
+<div id="app" role="application" aria-label="新學年新希望線上閱讀理解評量"></div>
+<script>
+window.__QUIZ_DATA__ = {
+  "passage_title": "新學年新希望",
+  "passage_paragraphs": [
+    "開學了，小恩走進教室，發現同學阿德長高了一大截，坐在旁邊的位子上翻著新課本，靜靜的看書。教室裡飄著淡淡的書香，大家都比暑假前多了一份沉穩的樣子。",
+    "老師請大家說說暑假的改變，也說說新學年的希望。阿德說，他暑假每天練習跳繩，現在想參加班際比賽；小恩想了想，才發現自己還沒有想清楚要做什麼。",
+    "放學後，小恩回家問媽媽：「我要怎麼訂新希望呢？」媽媽說：「你可以先想一件想做好的事，再想一個具體的做法，例如：要多讀課外書，還要每天寫一句心得。」",
+    "第二天，小恩鼓起勇氣在班上分享：「我的新希望是要把生字學得更好，還要每天多認識一個新的詞語。」老師稱讚小恩把希望和做法都說得很清楚，同學們也給她拍拍手。"
+  ],
+  "passage_html_glossary": {
+    "沉穩": "形容做事、態度穩重，不慌張。",
+    "書香": "指讀書、看書所散發出的氣息，也比喻愛讀書的風氣。",
+    "具體": "清楚明確，不是空泛籠統的想法。"
+  },
+  "measurement_goal": "本次評量之測量目標為：閱讀理解——能否讀懂短文內容並掌握故事的訊息、推論與主旨。",
+  "exclusion_note": "不屬於「閱讀理解」此一目標之能力（如書寫工整度、注音拼讀速度、口語流暢度、打字速度等），均不得影響作答結果之評分。",
+  "rubric": {
+    "title": "共用評分規準（點選 / 拖曳排序 / 文字輸入 三種作答方式通用）",
+    "levels": [
+      {
+        "level": "4",
+        "name": "完全正確",
+        "desc_common": "能正確掌握題目所問的閱讀理解重點，答案與短文內容或故事邏輯完全吻合。",
+        "click": "點選之選項與正確答案完全一致。",
+        "dragdrop": "拖曳排序之順序與正確順序完全一致（每一項皆在正確位置）。",
+        "text": "輸入之文字內容包含正確答案之關鍵詞義，語意明確指向正確答案（允許同義詞、簡短詞語、注音或口語化表達，不要求完整句子與正確字形）。"
+      },
+      {
+        "level": "3",
+        "name": "大致正確",
+        "desc_common": "掌握題目主要重點，但有極小瑕疵，不影響對閱讀理解的整體判斷。",
+        "click": "不適用（點選為離散選項，僅有完全一致或不一致兩種結果，無「大致正確」之中間態）。",
+        "dragdrop": "四項中有三項在正確位置，僅一組相鄰順序對調。",
+        "text": "輸入內容方向正確、關鍵詞義大致吻合，但用詞不夠精確或有一個字詞誤植，仍可看出理解正確。"
+      },
+      {
+        "level": "2",
+        "name": "部分正確",
+        "desc_common": "僅掌握題目的部分重點，顯示對內容有基礎理解，但未能完整掌握。",
+        "click": "不適用（點選僅有全對或全錯兩種結果）。",
+        "dragdrop": "四項中有兩項在正確位置，順序有明顯錯亂但非完全顛倒。",
+        "text": "輸入內容與短文主題相關，但只提到部分正確線索，未能明確指出關鍵答案。"
+      },
+      {
+        "level": "1",
+        "name": "尚未達成",
+        "desc_common": "未能掌握題目所問的閱讀理解重點，答案與短文內容或故事邏輯不符。",
+        "click": "點選之選項與正確答案不一致。",
+        "dragdrop": "四項中僅零至一項在正確位置，或完全未作答。",
+        "text": "輸入內容空白、與題目無關，或明顯誤解短文內容。"
+      }
+    ],
+    "note": "評分僅依據學生對短文內容之理解程度判定等級，不因作答方式不同而給予不同標準；教師評閱文字輸入作答時，應忽略錯別字、注音混用、標點與書寫格式等非閱讀理解相關之表現。"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "pirls_level": "提取訊息",
+      "stem": "開學那天，小恩走進教室，發現阿德有什麼改變？",
+      "keywords": {
+        "改變": "指跟以前不一樣的地方。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "長高了一大截",
+            "剪了新髮型",
+            "換了新書包",
+            "轉學到別班"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請將下列詞卡依「小恩發現阿德的改變」排成正確的句子。",
+          "items": [
+            "阿德",
+            "長高了",
+            "一大截",
+            "坐在旁邊的位子上"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請用一句話寫出：阿德有什麼改變？",
+          "sample_answer": "阿德長高了一大截",
+          "accept_keywords": [
+            "長高",
+            "長大",
+            "變高"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "pirls_level": "提取訊息",
+      "stem": "小恩的媽媽建議訂新希望時，除了先想一件想做好的事，還要想什麼？",
+      "keywords": {
+        "具體": "清楚明確，不是空泛籠統的想法。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "一個具體的做法",
+            "一個好聽的名字",
+            "一份暑假作業",
+            "一個新朋友"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請將下列詞卡排成媽媽說的完整建議。",
+          "items": [
+            "先想一件",
+            "想做好的事",
+            "再想",
+            "一個具體的做法"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請寫出：媽媽建議還要想什麼？",
+          "sample_answer": "一個具體的做法",
+          "accept_keywords": [
+            "具體做法",
+            "怎麼做",
+            "方法"
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "pirls_level": "直接推論",
+      "stem": "小恩一開始說不出新希望，最可能的原因是什麼？",
+      "keywords": {
+        "推論": "根據文章中的線索去想出沒有直接寫出來的答案。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "她還沒有想清楚要做什麼",
+            "她不喜歡上學",
+            "她討厭阿德",
+            "她不會寫字"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請排出小恩當時心裡最合理的想法。",
+          "items": [
+            "小恩",
+            "還沒有",
+            "想清楚",
+            "要做什麼"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請寫出：小恩一開始說不出新希望的原因。",
+          "sample_answer": "她還沒有想清楚要做什麼",
+          "accept_keywords": [
+            "沒想清楚",
+            "不知道",
+            "還沒決定"
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "pirls_level": "直接推論",
+      "stem": "老師稱讚小恩，最可能是因為小恩做到了什麼？",
+      "keywords": {
+        "稱讚": "用言語表示對別人的肯定與讚美。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "把希望和做法都說得很清楚",
+            "跳繩跳得比阿德快",
+            "考試考了一百分",
+            "主動打掃教室"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請排出老師稱讚小恩的原因。",
+          "items": [
+            "小恩",
+            "把希望",
+            "和做法",
+            "都說得很清楚"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請寫出：老師稱讚小恩的原因。",
+          "sample_answer": "把希望和做法都說得很清楚",
+          "accept_keywords": [
+            "說清楚",
+            "目標和做法",
+            "清楚表達"
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "pirls_level": "詮釋整合",
+      "stem": "整篇短文最主要想告訴我們的是什麼？",
+      "keywords": {
+        "主旨": "文章最重要、最想表達的中心意思。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "訂立新希望時要想清楚具體做法",
+            "暑假一定要去很多地方玩",
+            "長高了才能參加比賽",
+            "同學間不能互相稱讚"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請排出這篇短文最想表達的意思。",
+          "items": [
+            "訂立新希望時",
+            "要想清楚",
+            "一個",
+            "具體的做法"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請用一句話寫出這篇短文的主旨。",
+          "sample_answer": "訂立新希望要有具體做法",
+          "accept_keywords": [
+            "具體做法",
+            "目標和方法",
+            "把希望說清楚"
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "pirls_level": "比較評估",
+      "stem": "小恩的新希望和阿德的新希望，兩人有什麼共同的地方？",
+      "keywords": {
+        "共同": "彼此都相同、都一樣的地方。"
+      },
+      "modes": {
+        "click": {
+          "options": [
+            "都提出了具體要做的事情",
+            "都跟跳繩有關",
+            "都需要媽媽幫忙",
+            "都是暑假發生的事"
+          ],
+          "answer_index": 0
+        },
+        "dragdrop": {
+          "instruction": "請排出小恩和阿德新希望的共同點。",
+          "items": [
+            "兩人",
+            "都提出了",
+            "具體",
+            "要做的事情"
+          ],
+          "answer_order": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "text": {
+          "instruction": "請寫出：兩人新希望的共同點。",
+          "sample_answer": "都有具體要做的事情",
+          "accept_keywords": [
+            "具體目標",
+            "都有計畫",
+            "都說出做法"
+          ]
+        }
+      }
+    }
+  ],
+  "meta": {
+    "subject": "康軒國語三上 第一課：新學年新希望（依課文故事結構改寫之評量短文）",
+    "target": "國小三年級／學習功能等級偏弱",
+    "framework": "PIRLS 閱讀理解四層次：提取訊息、直接推論、詮釋整合、比較評估",
+    "total_questions": 6
+  }
+};
+</script>
+<script>
+(function () {
+  "use strict";
+
+  var DATA = window.__QUIZ_DATA__;
+  var app = document.getElementById("app");
+
+  // ---------- State ----------
+  var state = {
+    screen: "intro", // intro | quiz | result
+    qIndex: 0,
+    // per question: {mode: 'click'|'dragdrop'|'text', clickChoice:int|null, ddOrder:[idx...]|null, textValue:'', submitted:false, level:null}
+    answers: DATA.questions.map(function () {
+      return { mode: null, clickChoice: null, ddOrder: null, textValue: "", submitted: false, level: null };
+    }),
+    fontScale: "1", // '1' | '15' | '2'
+  };
+
+  var synth = window.speechSynthesis || null;
+  var currentUtterance = null;
+
+  // ---------- Helpers ----------
+  function el(tag, attrs, children) {
+    var e = document.createElement(tag);
+    attrs = attrs || {};
+    Object.keys(attrs).forEach(function (k) {
+      if (k === "class") e.className = attrs[k];
+      else if (k === "html") e.innerHTML = attrs[k];
+      else if (k === "text") e.textContent = attrs[k];
+      else if (k.indexOf("on") === 0 && typeof attrs[k] === "function") {
+        e.addEventListener(k.slice(2), attrs[k]);
+      } else if (attrs[k] === null || attrs[k] === undefined) {
+        // skip: allows conditional attrs like disabled: cond ? "disabled" : null
+      } else {
+        e.setAttribute(k, attrs[k]);
+      }
+    });
+    (children || []).forEach(function (c) {
+      if (c) e.appendChild(c);
+    });
+    return e;
+  }
+
+  function speak(text, onend) {
+    if (!synth) return;
+    synth.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = "zh-TW";
+    u.rate = 0.95;
+    if (onend) u.onend = onend;
+    currentUtterance = u;
+    synth.speak(u);
+  }
+
+  function stopSpeak() {
+    if (synth) synth.cancel();
+  }
+
+  function announce(msg) {
+    var live = document.getElementById("live-region");
+    if (live) {
+      live.textContent = "";
+      setTimeout(function () {
+        live.textContent = msg;
+      }, 50);
+    }
+  }
+
+  function applyFontScale(scale) {
+    state.fontScale = scale;
+    document.body.classList.remove("font-scale-15", "font-scale-2");
+    if (scale === "15") document.body.classList.add("font-scale-15");
+    if (scale === "2") document.body.classList.add("font-scale-2");
+  }
+
+  function renderKeywordText(text, keywords) {
+    // wraps any keyword occurrence with a toggle button; keywords: {word: explanation}
+    if (!keywords) return document.createTextNode(text);
+    var frag = document.createDocumentFragment();
+    var words = Object.keys(keywords);
+    if (words.length === 0) {
+      frag.appendChild(document.createTextNode(text));
+      return frag;
+    }
+    var re = new RegExp("(" + words.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")");
+    var parts = text.split(re);
+    parts.forEach(function (part, i) {
+      if (words.indexOf(part) !== -1) {
+        var btnId = "kw-" + Math.random().toString(36).slice(2, 9);
+        var popId = btnId + "-pop";
+        var btn = el("button", {
+          class: "kw",
+          type: "button",
+          "aria-expanded": "false",
+          "aria-controls": popId,
+          onclick: function (e) {
+            var pop = document.getElementById(popId);
+            var expanded = btn.getAttribute("aria-expanded") === "true";
+            btn.setAttribute("aria-expanded", String(!expanded));
+            pop.classList.toggle("open", !expanded);
+          },
+        }, [document.createTextNode(part)]);
+        frag.appendChild(btn);
+        var pop = el("span", { class: "kw-pop", id: popId, role: "note" }, [
+          document.createTextNode("「" + part + "」：" + keywords[part]),
+        ]);
+        frag.appendChild(pop);
+      } else if (part) {
+        frag.appendChild(document.createTextNode(part));
+      }
+    });
+    return frag;
+  }
+
+  // ---------- Scoring (shared rubric logic across 3 modes) ----------
+  function scoreClick(q, choiceIdx) {
+    if (choiceIdx === q.modes.click.answer_index) return 4;
+    return 1;
+  }
+
+  function scoreDragdrop(q, order) {
+    var ans = q.modes.dragdrop.answer_order;
+    if (!order || order.length !== ans.length) return 1;
+    var correctCount = 0;
+    for (var i = 0; i < ans.length; i++) {
+      if (order[i] === ans[i]) correctCount++;
+    }
+    if (correctCount === ans.length) return 4;
+    if (correctCount === ans.length - 1) return 3;
+    if (correctCount >= Math.ceil(ans.length / 2)) return 2;
+    return 1;
+  }
+
+  function normalizeText(s) {
+    return (s || "")
+      .replace(/[，。！？、；：「」『』\s]/g, "")
+      .toLowerCase();
+  }
+
+  function scoreText(q, text) {
+    var t = normalizeText(text);
+    if (!t) return 1;
+    var sample = normalizeText(q.modes.text.sample_answer);
+    var keywords = q.modes.text.accept_keywords || [];
+    // level 4: contains full sample answer OR any accept keyword AND reasonably specific
+    var hitKeyword = keywords.some(function (k) {
+      return t.indexOf(normalizeText(k)) !== -1;
+    });
+    var hitSample = sample && t.indexOf(sample) !== -1;
+    if (hitSample || hitKeyword) return 4;
+    // level 3: partial overlap with sample answer chars (rough heuristic)
+    var overlap = 0;
+    for (var i = 0; i < sample.length; i++) {
+      if (t.indexOf(sample[i]) !== -1) overlap++;
+    }
+    var ratio = sample.length ? overlap / sample.length : 0;
+    if (ratio >= 0.6) return 3;
+    if (ratio >= 0.3) return 2;
+    return 1;
+  }
+
+  function getLevelInfo(level) {
+    return DATA.rubric.levels.filter(function (l) { return l.level === String(level); })[0];
+  }
+
+  // ---------- Rendering: Intro screen ----------
+  function renderIntro() {
+    app.innerHTML = "";
+    var wrap = el("div", {}, [
+      el("a", { class: "skip-link", href: "#main-content" }, [document.createTextNode("跳到主要內容")]),
+      el("header", { class: "app-header" }, [
+        el("h1", { text: "新學年新希望｜線上閱讀理解評量" }),
+        el("p", { class: "subtitle", text: "康軒國語三上 第一課．PIRLS 閱讀理解層次評量" }),
+        el("div", { class: "meta-badges" }, [
+          el("span", { class: "badge", text: "適用對象：三年級／學習功能等級偏弱" }),
+          el("span", { class: "badge", text: "共 6 題" }),
+          el("span", { class: "badge", text: "不設倒數計時" }),
+        ]),
+      ]),
+      el("main", { id: "main-content" }, [
+        el("div", { class: "info-panel" }, [
+          el("strong", { text: "測量目標：" }),
+          document.createTextNode(DATA.measurement_goal.replace("本次評量之測量目標為：", "")),
+        ]),
+        el("div", { class: "info-panel exclusion" }, [
+          el("strong", { text: "評分原則：" }),
+          document.createTextNode(DATA.exclusion_note),
+        ]),
+        el("div", { class: "passage-card" }, [
+          el("h2", { text: "作答說明" }),
+          el("p", { text: "每一題都會先朗讀題目、同時顯示文字，你可以點選題幹中畫底線的詞語查看解釋。" }),
+          el("p", { text: "每一題可以自由選擇下列其中一種方式作答：①點選答案　②拖曳詞卡排序　③輸入簡短文字。三種方式使用同一套評分標準，選擇你最容易表達的方式即可。" }),
+          el("p", { text: "作答過程不設時間限制，可依自己的步調完成；全程也可以只用鍵盤（Tab／方向鍵／Enter／空白鍵）操作，不需要使用滑鼠。" }),
+        ]),
+        renderA11yBar(),
+        el("div", { style: "text-align:center;margin-top:24px;" }, [
+          el("button", {
+            class: "btn btn-primary",
+            style: "font-size:22px;padding:16px 32px;",
+            onclick: function () {
+              state.screen = "quiz";
+              state.qIndex = 0;
+              render();
+            },
+          }, [document.createTextNode("開始作答")]),
+        ]),
+      ]),
+      el("div", { id: "live-region", "aria-live": "polite", class: "visually-hidden" }),
+    ]);
+    app.appendChild(wrap);
+  }
+
+  function renderA11yBar() {
+    var bar = el("div", { class: "a11y-bar", role: "group", "aria-label": "字級調整" });
+    var sizes = [
+      { id: "1", label: "標準字級" },
+      { id: "15", label: "放大 1.5 倍" },
+      { id: "2", label: "放大 2 倍" },
+    ];
+    sizes.forEach(function (s) {
+      var btn = el("button", {
+        class: "btn btn-outline",
+        type: "button",
+        "aria-pressed": String(state.fontScale === s.id),
+        onclick: function () {
+          applyFontScale(s.id);
+          Array.prototype.forEach.call(bar.querySelectorAll("button"), function (b) {
+            b.setAttribute("aria-pressed", "false");
+          });
+          btn.setAttribute("aria-pressed", "true");
+        },
+      }, [document.createTextNode(s.label)]);
+      bar.appendChild(btn);
+    });
+    return bar;
+  }
+
+  window.__quizInternals = {
+    el: el, speak: speak, stopSpeak: stopSpeak, announce: announce,
+    renderKeywordText: renderKeywordText, scoreClick: scoreClick,
+    scoreDragdrop: scoreDragdrop, scoreText: scoreText, getLevelInfo: getLevelInfo,
+    renderA11yBar: renderA11yBar, applyFontScale: applyFontScale,
+  };
+  window.__quizState = state;
+  window.__quizData = DATA;
+  window.__renderIntro = renderIntro;
+})();
+
+(function () {
+  "use strict";
+  var I = window.__quizInternals;
+  var state = window.__quizState;
+  var DATA = window.__quizData;
+  var app = document.getElementById("app");
+  var el = I.el;
+
+  function currentAnswer() {
+    return state.answers[state.qIndex];
+  }
+
+  function renderQuiz() {
+    app.innerHTML = "";
+    var q = DATA.questions[state.qIndex];
+    var ans = currentAnswer();
+    var total = DATA.questions.length;
+
+    var header = el("header", { class: "app-header" }, [
+      el("h1", { text: "新學年新希望｜線上閱讀理解評量" }),
+      I.renderA11yBar(),
+    ]);
+
+    var progressPct = Math.round(((state.qIndex) / total) * 100);
+    var progress = el("div", { class: "progress-wrap" }, [
+      el("div", { class: "progress-track" }, [
+        el("div", { class: "progress-fill", style: "width:" + progressPct + "%" }),
+      ]),
+      el("div", { class: "progress-label", text: "第 " + (state.qIndex + 1) + " 題／共 " + total + " 題" }),
+    ]);
+
+    var main = el("main", { id: "main-content" });
+    main.appendChild(progress);
+    main.appendChild(renderPassageCard());
+    main.appendChild(renderQuestionCard(q, ans));
+
+    var nav = el("div", { class: "nav-row" }, [
+      el("button", {
+        class: "btn btn-outline",
+        disabled: state.qIndex === 0 ? "disabled" : null,
+        onclick: function () {
+          if (state.qIndex > 0) {
+            state.qIndex--;
+            I.stopSpeak();
+            render();
+          }
+        },
+      }, [document.createTextNode("← 上一題")]),
+      el("button", {
+        class: "btn btn-primary",
+        id: "next-btn",
+        onclick: function () {
+          if (!ans.submitted) {
+            I.announce("請先完成本題作答並送出，再前往下一題。");
+            var fp = document.getElementById("submit-hint");
+            if (fp) fp.focus();
+            return;
+          }
+          I.stopSpeak();
+          if (state.qIndex < total - 1) {
+            state.qIndex++;
+            render();
+          } else {
+            state.screen = "result";
+            render();
+          }
+        },
+      }, [document.createTextNode(state.qIndex < total - 1 ? "下一題 →" : "查看結果")]),
+    ]);
+    main.appendChild(nav);
+
+    app.appendChild(header);
+    app.appendChild(main);
+    app.appendChild(el("div", { id: "live-region", "aria-live": "polite", class: "visually-hidden" }));
+  }
+
+  function renderPassageCard() {
+    var card = el("div", { class: "passage-card" });
+    var h2 = el("h2", { text: "閱讀短文：" + DATA.passage_title });
+    var audioBtn = el("button", {
+      class: "btn btn-primary",
+      type: "button",
+      onclick: function () {
+        var full = DATA.passage_paragraphs.join("");
+        I.speak(full);
+      },
+    }, [document.createTextNode("🔊 朗讀短文")]);
+    var stopBtn = el("button", {
+      class: "btn btn-outline",
+      type: "button",
+      onclick: function () { I.stopSpeak(); },
+    }, [document.createTextNode("⏹ 停止朗讀")]);
+    card.appendChild(h2);
+    card.appendChild(el("div", { class: "audio-controls" }, [audioBtn, stopBtn]));
+    DATA.passage_paragraphs.forEach(function (p) {
+      var pEl = el("p", {});
+      pEl.appendChild(I.renderKeywordText(p, DATA.passage_html_glossary));
+      card.appendChild(pEl);
+    });
+    return card;
+  }
+
+  function renderQuestionCard(q, ans) {
+    var card = el("div", { class: "question-card" });
+    card.appendChild(el("span", { class: "q-level-tag", text: "PIRLS：" + q.pirls_level }));
+
+    var stemWrap = el("div", { class: "q-stem" });
+    stemWrap.appendChild(I.renderKeywordText(q.stem, q.keywords));
+    card.appendChild(stemWrap);
+
+    var readBtn = el("button", {
+      class: "btn btn-outline",
+      type: "button",
+      onclick: function () { I.speak(q.stem); },
+    }, [document.createTextNode("🔊 朗讀題目")]);
+    card.appendChild(el("div", { style: "margin-bottom:16px;" }, [readBtn]));
+
+    if (!ans.mode) {
+      card.appendChild(renderModeChooser(q, ans));
+    } else {
+      card.appendChild(renderModeSwitchBar(q, ans));
+      var body = el("div", { id: "mode-body" });
+      if (ans.mode === "click") body.appendChild(renderClickMode(q, ans));
+      if (ans.mode === "dragdrop") body.appendChild(renderDragdropMode(q, ans));
+      if (ans.mode === "text") body.appendChild(renderTextMode(q, ans));
+      card.appendChild(body);
+
+      if (!ans.submitted) {
+        card.appendChild(el("p", {
+          id: "submit-hint", tabindex: "-1",
+          style: "font-size:16px;color:#555;",
+          text: "完成作答後請按下方「送出答案」按鈕確認。",
+        }));
+        card.appendChild(el("div", { style: "margin-top:10px;" }, [
+          el("button", {
+            class: "btn btn-primary",
+            onclick: function () { submitAnswer(q, ans); },
+          }, [document.createTextNode("送出答案")]),
+        ]));
+      } else {
+        card.appendChild(renderFeedback(q, ans));
+      }
+    }
+    return card;
+  }
+
+  function renderModeChooser(q, ans) {
+    var wrap = el("div", {});
+    wrap.appendChild(el("p", { style: "font-weight:700;font-size:18px;", text: "請選擇你想使用的作答方式：" }));
+    var row = el("div", { class: "mode-switch", role: "group", "aria-label": "選擇作答方式" });
+    var modes = [
+      { id: "click", label: "① 點選作答" },
+      { id: "dragdrop", label: "② 拖曳排序作答" },
+      { id: "text", label: "③ 文字輸入作答" },
+    ];
+    modes.forEach(function (m) {
+      row.appendChild(el("button", {
+        class: "btn btn-primary",
+        onclick: function () { ans.mode = m.id; render(); },
+      }, [document.createTextNode(m.label)]));
+    });
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  function renderModeSwitchBar(q, ans) {
+    var row = el("div", { class: "mode-switch", role: "group", "aria-label": "切換作答方式" });
+    var modes = [
+      { id: "click", label: "① 點選作答" },
+      { id: "dragdrop", label: "② 拖曳排序" },
+      { id: "text", label: "③ 文字輸入" },
+    ];
+    modes.forEach(function (m) {
+      row.appendChild(el("button", {
+        class: "btn",
+        "aria-pressed": String(ans.mode === m.id),
+        disabled: ans.submitted ? "disabled" : null,
+        onclick: function () {
+          if (ans.submitted) return;
+          ans.mode = m.id;
+          render();
+        },
+      }, [document.createTextNode(m.label)]));
+    });
+    return row;
+  }
+
+  // ---- Click mode ----
+  function renderClickMode(q, ans) {
+    var wrap = el("div", {});
+    var list = el("div", { class: "options-list", role: "radiogroup", "aria-label": "選項" });
+    var prefixes = ["A", "B", "C", "D"];
+    q.modes.click.options.forEach(function (optText, idx) {
+      var btn = el("button", {
+        class: "option-btn",
+        type: "button",
+        role: "radio",
+        "aria-checked": String(ans.clickChoice === idx),
+        "aria-pressed": String(ans.clickChoice === idx),
+        disabled: ans.submitted ? "disabled" : null,
+        onclick: function () {
+          if (ans.submitted) return;
+          ans.clickChoice = idx;
+          render();
+        },
+      }, [
+        el("span", { class: "option-prefix", "aria-hidden": "true", text: prefixes[idx] }),
+        el("span", {}, [document.createTextNode(optText)]),
+      ]);
+      if (ans.submitted) {
+        if (idx === q.modes.click.answer_index) btn.classList.add("marked-correct");
+        else if (idx === ans.clickChoice) btn.classList.add("marked-incorrect");
+      }
+      list.appendChild(btn);
+    });
+    wrap.appendChild(list);
+    return wrap;
+  }
+
+  // ---- Dragdrop mode (mouse drag + full keyboard alternative) ----
+  function renderDragdropMode(q, ans) {
+    var wrap = el("div", {});
+    var dd = q.modes.dragdrop;
+    if (!ans.ddOrder) ans.ddOrder = dd.items.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; });
+
+    wrap.appendChild(el("p", { class: "dragdrop-instruction" }, [document.createTextNode(dd.instruction)]));
+    wrap.appendChild(el("p", { class: "dd-keyboard-hint", text: "鍵盤操作方式：先按 Tab 移到詞卡，按 Enter 或空白鍵「選取」，再用 ↑／↓ 調整位置，最後再按 Enter 確認放下。" }));
+
+    var listWrap = el("ul", { class: "dd-order-list", id: "dd-list", "aria-label": "詞卡排序區，可用上下鍵調整順序" });
+    var grabbedIndex = null;
+
+    function move(from, to) {
+      var arr = ans.ddOrder;
+      var item = arr.splice(from, 1)[0];
+      arr.splice(to, 0, item);
+      renderList();
+    }
+
+    function renderList() {
+      listWrap.innerHTML = "";
+      ans.ddOrder.forEach(function (itemIdx, pos) {
+        var chip = el("li", {}, [
+          el("button", {
+            class: "dd-chip" + (grabbedIndex === pos ? " grabbed" : ""),
+            type: "button",
+            disabled: ans.submitted ? "disabled" : null,
+            "aria-pressed": String(grabbedIndex === pos),
+            "aria-label": (pos + 1) + "順位：" + dd.items[itemIdx] + (grabbedIndex === pos ? "（已選取，按上下鍵移動，Enter確認）" : "（按Enter選取）"),
+            onclick: function () {
+              if (ans.submitted) return;
+              if (grabbedIndex === null) {
+                grabbedIndex = pos;
+              } else if (grabbedIndex === pos) {
+                grabbedIndex = null;
+              } else {
+                move(grabbedIndex, pos);
+                grabbedIndex = null;
+              }
+              renderList();
+            },
+            onkeydown: function (e) {
+              if (ans.submitted) return;
+              if (grabbedIndex === pos && (e.key === "ArrowUp" || e.key === "ArrowDown")) {
+                e.preventDefault();
+                var target = e.key === "ArrowUp" ? pos - 1 : pos + 1;
+                if (target >= 0 && target < ans.ddOrder.length) {
+                  move(pos, target);
+                  grabbedIndex = target;
+                  renderList();
+                  setTimeout(function () {
+                    var chips = listWrap.querySelectorAll(".dd-chip");
+                    if (chips[grabbedIndex]) chips[grabbedIndex].focus();
+                  }, 0);
+                }
+              }
+            },
+          }, [document.createTextNode((pos + 1) + "． " + dd.items[itemIdx])]),
+        ]);
+        listWrap.appendChild(chip);
+      });
+    }
+    renderList();
+    wrap.appendChild(listWrap);
+    return wrap;
+  }
+
+  // ---- Text mode ----
+  function renderTextMode(q, ans) {
+    var wrap = el("div", {});
+    wrap.appendChild(el("p", { class: "text-instruction", text: q.modes.text.instruction }));
+    var textarea = el("textarea", {
+      class: "text-answer-input",
+      rows: "2",
+      "aria-label": q.modes.text.instruction,
+      disabled: ans.submitted ? "disabled" : null,
+      oninput: function (e) { ans.textValue = e.target.value; },
+    });
+    textarea.value = ans.textValue || "";
+    wrap.appendChild(textarea);
+    wrap.appendChild(el("p", { style: "font-size:15px;color:#555;", text: "提示：用你自己的話簡短寫出答案即可，錯字、注音混用、標點符號都沒有關係，評分只看你有沒有答對重點。" }));
+    return wrap;
+  }
+
+  function submitAnswer(q, ans) {
+    var level;
+    if (ans.mode === "click") {
+      if (ans.clickChoice === null || ans.clickChoice === undefined) {
+        I.announce("請先點選一個答案。");
+        return;
+      }
+      level = I.scoreClick(q, ans.clickChoice);
+    } else if (ans.mode === "dragdrop") {
+      level = I.scoreDragdrop(q, ans.ddOrder);
+    } else if (ans.mode === "text") {
+      if (!ans.textValue || !ans.textValue.trim()) {
+        I.announce("請先輸入答案文字。");
+        return;
+      }
+      level = I.scoreText(q, ans.textValue);
+    }
+    ans.level = level;
+    ans.submitted = true;
+    render();
+    I.announce("已送出答案。");
+  }
+
+  function renderFeedback(q, ans) {
+    var levelInfo = I.getLevelInfo(ans.level);
+    var panel = el("div", { class: "feedback-panel is-" + ans.level, role: "status" });
+    var icon = ans.level >= 3 ? "✔" : (ans.level === 2 ? "△" : "✘");
+    panel.appendChild(el("div", { class: "feedback-level" }, [
+      el("span", { class: "feedback-icon", "aria-hidden": "true", text: icon }),
+      document.createTextNode("評分等級 " + ans.level + "：" + levelInfo.name),
+    ]));
+    panel.appendChild(el("p", { text: levelInfo.desc_common }));
+    if (ans.mode === "click" && ans.level < 4) {
+      panel.appendChild(el("p", {
+        text: "正確答案：" + q.modes.click.options[q.modes.click.answer_index],
+      }));
+    }
+    return panel;
+  }
+
+  window.__renderQuiz = renderQuiz;
+})();
+
+(function () {
+  "use strict";
+  var I = window.__quizInternals;
+  var state = window.__quizState;
+  var DATA = window.__quizData;
+  var app = document.getElementById("app");
+  var el = I.el;
+
+  function renderResult() {
+    app.innerHTML = "";
+    var total = DATA.questions.length;
+    var levelCounts = { "4": 0, "3": 0, "2": 0, "1": 0 };
+    state.answers.forEach(function (a) {
+      if (a.level) levelCounts[String(a.level)]++;
+    });
+    var achieved = levelCounts["4"] + levelCounts["3"];
+
+    var header = el("header", { class: "app-header" }, [
+      el("h1", { text: "評量結果" }),
+      el("p", { class: "subtitle", text: "新學年新希望｜線上閱讀理解評量" }),
+      I.renderA11yBar(),
+    ]);
+
+    var main = el("main", { id: "main-content" });
+    var card = el("div", { class: "result-card" });
+    card.appendChild(el("h2", { text: "整體表現摘要" }));
+    var grid = el("div", { class: "result-summary-grid" }, [
+      statBlock(achieved + " / " + total, "達成（等級3-4）題數"),
+      statBlock(String(levelCounts["4"]), "等級4．完全正確"),
+      statBlock(String(levelCounts["3"]), "等級3．大致正確"),
+      statBlock(String(levelCounts["2"]), "等級2．部分正確"),
+      statBlock(String(levelCounts["1"]), "等級1．尚未達成"),
+    ]);
+    card.appendChild(grid);
+
+    card.appendChild(el("div", { class: "info-panel" }, [
+      el("strong", { text: "測量目標：" }),
+      document.createTextNode(DATA.measurement_goal.replace("本次評量之測量目標為：", "")),
+      el("p", { style: "margin:8px 0 0;", text: "以上結果僅反映學生於「閱讀理解」此一目標之表現，未涉及書寫、拼讀速度或口語流暢度等其他能力。" }),
+    ]));
+
+    card.appendChild(el("h2", { text: "逐題回顧" }));
+    DATA.questions.forEach(function (q, i) {
+      var a = state.answers[i];
+      var levelInfo = a.level ? I.getLevelInfo(a.level) : null;
+      var item = el("div", { class: "review-item" });
+      item.appendChild(el("div", { class: "rq" }, [
+        document.createTextNode("第 " + (i + 1) + " 題（" + q.pirls_level + "）：" + q.stem),
+      ]));
+      item.appendChild(el("div", {}, [
+        document.createTextNode("作答方式：" + modeLabel(a.mode) + "　｜　評分等級：" + (a.level || "—") + (levelInfo ? "（" + levelInfo.name + "）" : "")),
+      ]));
+      card.appendChild(item);
+    });
+
+    var actions = el("div", { style: "margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;" }, [
+      el("button", {
+        class: "btn btn-primary",
+        onclick: function () {
+          state.answers = DATA.questions.map(function () {
+            return { mode: null, clickChoice: null, ddOrder: null, textValue: "", submitted: false, level: null };
+          });
+          state.qIndex = 0;
+          state.screen = "quiz";
+          render();
+        },
+      }, [document.createTextNode("重新作答")]),
+      el("button", {
+        class: "btn btn-outline",
+        onclick: function () { window.print(); },
+      }, [document.createTextNode("列印 / 儲存結果")]),
+    ]);
+    card.appendChild(actions);
+
+    main.appendChild(card);
+    app.appendChild(header);
+    app.appendChild(main);
+    app.appendChild(el("div", { id: "live-region", "aria-live": "polite", class: "visually-hidden" }));
+    I.announce("評量已完成，共答對達成 " + achieved + " 題，總共 " + total + " 題。");
+  }
+
+  function statBlock(num, label) {
+    return el("div", { class: "result-stat" }, [
+      el("div", { class: "num", text: num }),
+      el("div", { class: "lbl", text: label }),
+    ]);
+  }
+
+  function modeLabel(mode) {
+    if (mode === "click") return "點選作答";
+    if (mode === "dragdrop") return "拖曳排序作答";
+    if (mode === "text") return "文字輸入作答";
+    return "未作答";
+  }
+
+  window.__renderResult = renderResult;
+})();
+
+function render() {
+  var state = window.__quizState;
+  if (state.screen === "intro") window.__renderIntro();
+  else if (state.screen === "quiz") window.__renderQuiz();
+  else if (state.screen === "result") window.__renderResult();
+  window.scrollTo(0, 0);
+}
+
+render();
+
+</script>
+</body>
+</html>
